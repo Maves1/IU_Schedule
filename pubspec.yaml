@@ -31,6 +31,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: 0.13.5
+  icalendar_parser: any
+  intl: ^0.18.0
 
 
   # The following adds the Cupertino Icons font to your application.
