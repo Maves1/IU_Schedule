@@ -1,16 +1,9 @@
 # inno_schedule
 
-A new Flutter project.
+A simple Innopolis University schedule
 
-## Getting Started
+![1](https://user-images.githubusercontent.com/27851965/230796036-17dda3c9-ba5e-4fe0-b090-e83b7234b817.jpg)
 
-This project is a starting point for a Flutter application.
+## Schedule
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Schedule is taken from https://innohassle.ru/schedule/categories.json
