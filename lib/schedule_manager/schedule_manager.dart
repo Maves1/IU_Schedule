@@ -8,7 +8,6 @@ import 'package:inno_schedule/schedule_manager/group.dart';
 import 'package:inno_schedule/schedule_manager/schedule.dart';
 
 class ScheduleManager {
-
   final String baseUrl = "https://innohassle.ru/schedule/";
   late final String academicUrl;
   // late final String electivesUrl;
@@ -33,19 +32,19 @@ class ScheduleManager {
         var courseYear = entry["course"];
         var calendarUrl = entry["file"];
 
-        var currGroup = Group(groupName, courseYear, calendarUrl);
+        var currGroup =
+            Group(name: groupName, year: courseYear, calendarUrl: calendarUrl);
 
         _groups.add(currGroup);
       }
 
       client.close();
       return true;
-
-    } on SocketException catch(e) {
+    } on SocketException catch (e) {
       print(e.toString());
-    } on HttpException catch(e) {
+    } on HttpException catch (e) {
       print(e.toString());
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       print(e.toString());
     }
 
@@ -53,7 +52,8 @@ class ScheduleManager {
     return false;
   }
 
-  Future<Map<String, dynamic>> _retrieveGroupScheduleJson(final Group group) async {
+  Future<Map<String, dynamic>> _retrieveGroupScheduleJson(
+      final Group group) async {
     var client = Client();
 
     try {
@@ -64,7 +64,7 @@ class ScheduleManager {
 
       client.close();
       return calendar.toJson();
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       print(e.toString());
     }
 
@@ -83,9 +83,10 @@ class ScheduleManager {
 
     for (var entry in jsonSchedule["data"]) {
       final courseName = entry["summary"];
-      
+
       final description = entry["description"].toString();
-      final professor = description.substring(0, description.lastIndexOf("\\n"));
+      final professor =
+          description.substring(0, description.lastIndexOf("\\n"));
       final location = entry["location"];
 
       final startTime = DateTime.parse(entry["dtstart"]["dt"].toString());
@@ -94,8 +95,8 @@ class ScheduleManager {
       // TODO: implement
       // final dateUntil = DateTime.parse(entry["dtend"].toString());
 
-      eventsList.add(ScheduleEntry(courseName, professor, location,
-                                   startTime, endTime));
+      eventsList.add(
+          ScheduleEntry(courseName, professor, location, startTime, endTime));
     }
 
     Schedule schedule = Schedule(group, eventsList);
@@ -123,20 +124,18 @@ class ScheduleManager {
   }
 }
 
-
 // Usage example
 Future<void> main() async {
-  
   // Firstly we need to create an instance of ScheduleManager
   ScheduleManager scheduleManager = ScheduleManager();
-  
+
   // Then we download schedule info
   bool result = await scheduleManager.retrieveScheduleInfo();
 
   // Then we can see courses (BS Year 1, BS Year 2, ...)
   var courses = scheduleManager.courses;
   // print("courses: $courses");
-  
+
   // And we can get groups for a particular year
   var groups = scheduleManager.getGroupsForCourse(courses[2]);
 

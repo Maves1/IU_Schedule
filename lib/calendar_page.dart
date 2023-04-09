@@ -3,6 +3,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'schedule_manager/schedule_manager.dart';
 import 'schedule_manager/schedule.dart';
 import 'event_view.dart';
+import 'schedule_manager/group.dart';
+import 'local_storage.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -16,12 +18,20 @@ class _CalendarPageState extends State<CalendarPage> {
   Schedule? _schedule;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  Group? _selectedGroup;
 
   Future<bool> initSchedule() async {
     bool res = await _scheduleClient.retrieveScheduleInfo();
-    var courses = _scheduleClient.courses;
-    var groups = _scheduleClient.getGroupsForCourse(courses[0]);
-    _schedule = await _scheduleClient.getScheduleForGroup(groups[0]);
+
+    try {
+      _selectedGroup = await LocalStorageService.getGroup();
+    } catch (e) {
+      var courses = _scheduleClient.courses;
+      _selectedGroup = _scheduleClient.getGroupsForCourse(courses[0])[0];
+    }
+
+    _schedule = await _scheduleClient.getScheduleForGroup(_selectedGroup!);
+
     return res;
   }
 
@@ -30,6 +40,10 @@ class _CalendarPageState extends State<CalendarPage> {
             .where((e) => e.startDateTime.weekday == day.weekday)
             .toList() ??
         [];
+  }
+
+  String _getSelectedGroupString() {
+    return '${_selectedGroup?.year} - ${_selectedGroup?.name}';
   }
 
   @override
@@ -55,7 +69,15 @@ class _CalendarPageState extends State<CalendarPage> {
                   });
                 },
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
+              Row(children: <Widget>[
+                Text('Schedule: ${_getSelectedGroupString()}'),
+                const Spacer(),
+                ElevatedButton(
+                    onPressed: () => Navigator.of(context).pushNamed("/config"),
+                    child: const Text('Change'))
+              ]),
+              const SizedBox(height: 8.0),
               Expanded(
                   child: ListView(
                 shrinkWrap: true,
