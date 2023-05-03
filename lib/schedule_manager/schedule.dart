@@ -24,12 +24,13 @@ class ScheduleEntry {
   final DateTime endDateTime;
   // final DateTime dateUntil;
 
-  ScheduleEntry(this.title, this.professor, this.location,
-                this.startDateTime, this.endDateTime);
+  ScheduleEntry(this.title, this.professor, this.location, this.startDateTime,
+      this.endDateTime);
 
   @override
   String toString() {
-    final timePeriod = "${startDateTime.hour}:${startDateTime.minute} - ${endDateTime.hour}:${endDateTime.minute}";
+    final timePeriod =
+        "${startDateTime.hour}:${startDateTime.minute} - ${endDateTime.hour}:${endDateTime.minute}";
     return "$title\n$professor\n$location\n$timePeriod\n";
   }
 }
