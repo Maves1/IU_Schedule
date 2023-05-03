@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import "package:http/http.dart";
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:inno_schedule/schedule_manager/group.dart';
@@ -41,11 +42,17 @@ class ScheduleManager {
       client.close();
       return true;
     } on SocketException catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     } on HttpException catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     } on Exception catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
 
     client.close();
@@ -65,7 +72,9 @@ class ScheduleManager {
       client.close();
       return calendar.toJson();
     } on Exception catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
 
     client.close();
@@ -130,7 +139,8 @@ Future<void> main() async {
   ScheduleManager scheduleManager = ScheduleManager();
 
   // Then we download schedule info
-  bool result = await scheduleManager.retrieveScheduleInfo();
+  await scheduleManager
+      .retrieveScheduleInfo(); // NOTE: we are not collecting the result
 
   // Then we can see courses (BS Year 1, BS Year 2, ...)
   var courses = scheduleManager.courses;
@@ -143,5 +153,7 @@ Future<void> main() async {
 
   // And finally we can get an instance of a Schedule for a particular group
   var schedule = await scheduleManager.getScheduleForGroup(groups[2]);
-  print(schedule);
+  if (kDebugMode) {
+    print(schedule);
+  }
 }

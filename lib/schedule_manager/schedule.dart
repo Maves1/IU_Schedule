@@ -1,8 +1,8 @@
 import 'group.dart';
 
 class Schedule {
-  var _group;
-  List<ScheduleEntry> _scheduleEventsList;
+  final Group _group;
+  final List<ScheduleEntry> _scheduleEventsList;
 
   Schedule(this._group, this._scheduleEventsList);
 

@@ -12,7 +12,7 @@ class Group {
 
   @override
   String toString() {
-    return "Group: ${name}\nYear: ${year}\nURL: ${calendarUrl}\n";
+    return "Group: $name\nYear: $year\nURL: $calendarUrl\n";
   }
 
   factory Group.fromJson(Map<String, dynamic> json) => _$GroupFromJson(json);
