@@ -29,4 +29,9 @@ jobs:
       - name: Run linter
         run: flutter analyze
       - name: Start release build
-        run: flutter build appbundle
+        run: flutter build apk
+      - name: Save APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: build/app/outputs/apk/release/app-release.apk
