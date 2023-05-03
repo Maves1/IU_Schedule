@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'schedule_manager/group.dart';
 
@@ -15,8 +16,11 @@ class LocalStorageService {
   }
 
   static _write(String text) async {
+    if (kDebugMode) {
+      print(text);
+    }
     File file = await _getFile();
-    await file.writeAsString("$text\n", mode: FileMode.append);
+    await file.writeAsString(text, mode: FileMode.write);
   }
 
   static _read() async {
@@ -27,6 +31,6 @@ class LocalStorageService {
 
   static getGroup() async {
     String group_ = await _read();
-    Group.fromJson(jsonDecode(group_));
+    return Group.fromJson(jsonDecode(group_));
   }
 }

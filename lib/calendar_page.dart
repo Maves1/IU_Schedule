@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'schedule_manager/schedule_manager.dart';
@@ -23,9 +24,17 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<bool> initSchedule() async {
     bool res = await _scheduleClient.retrieveScheduleInfo();
 
+    _selectedGroup = null;
+
     try {
       _selectedGroup = await LocalStorageService.getGroup();
     } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+
+    if (_selectedGroup == null) {
       var courses = _scheduleClient.courses;
       _selectedGroup = _scheduleClient.getGroupsForCourse(courses[0])[0];
     }
