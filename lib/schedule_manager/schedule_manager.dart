@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
@@ -5,24 +6,76 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart";
 import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:inno_schedule/schedule_manager/api_response.dart';
 import 'package:inno_schedule/schedule_manager/group.dart';
 import 'package:inno_schedule/schedule_manager/schedule.dart';
 
+import '../local_storage.dart';
+
 class ScheduleManager {
+  final StreamController<APIResponse<Schedule>> _scheduleController;
+
+  static ScheduleManager? _scheduleManager;
+
   final String baseUrl = "https://innohassle.ru/schedule/";
   late final String academicUrl;
   // late final String electivesUrl;
 
   final Set<Group> _groups;
 
-  ScheduleManager() : _groups = <Group>{} {
+  late Group currGroup;
+  late Schedule currSchedule;
+
+  static ScheduleManager instance() {
+    _scheduleManager ??= ScheduleManager();
+    return _scheduleManager!;
+  }
+
+  ScheduleManager() : _groups = <Group>{},
+                      _scheduleController =
+                                     StreamController<APIResponse<Schedule>>() {
     academicUrl = "$baseUrl/academic.json";
+
+    loadSchedule();
+  }
+
+  StreamSink<APIResponse<Schedule>> get scheduleSink =>
+      _scheduleController.sink;
+
+  Stream<APIResponse<Schedule>> get scheduleStream =>
+      _scheduleController.stream;
+
+  Future<bool> loadSchedule() async {
+    bool res = await retrieveScheduleInfo();
+
+    try {
+      currGroup = await LocalStorageService.getGroup();
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      if (courses.isNotEmpty) {
+        currGroup = getGroupsForCourse(courses[0])[0];
+      }
+    }
+
+    try {
+      await getScheduleForGroup(currGroup);
+    } on Exception catch(e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+
+    return res;
   }
 
   Future<bool> retrieveScheduleInfo() async {
     var client = Client();
 
     try {
+      scheduleSink.add(APIResponse.loading());
+
       var response = await client.get(Uri.parse(academicUrl));
       var academicJson = json.decode(response.body);
 
@@ -54,6 +107,7 @@ class ScheduleManager {
         print(e.toString());
       }
     }
+    scheduleSink.add(APIResponse.failure());
 
     client.close();
     return false;
@@ -82,9 +136,12 @@ class ScheduleManager {
   }
 
   Future<Schedule> getScheduleForGroup(final Group group) async {
+    scheduleSink.add(APIResponse.loading());
+
     Map<String, dynamic> jsonSchedule = await _retrieveGroupScheduleJson(group);
 
     if (jsonSchedule.isEmpty) {
+      scheduleSink.add(APIResponse.failure());
       throw Exception("Couldn't retrieve schedule");
     }
 
@@ -108,8 +165,10 @@ class ScheduleManager {
           ScheduleEntry(courseName, professor, location, startTime, endTime));
     }
 
-    Schedule schedule = Schedule(group, eventsList);
-    return schedule;
+    currSchedule = Schedule(group, eventsList);
+    scheduleSink.add(APIResponse.success(currSchedule));
+
+    return currSchedule;
   }
 
   List<String> get courses {
