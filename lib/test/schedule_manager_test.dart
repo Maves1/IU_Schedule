@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:inno_schedule/schedule_manager/schedule_manager.dart';
 import 'package:inno_schedule/schedule_manager/group.dart';
 
