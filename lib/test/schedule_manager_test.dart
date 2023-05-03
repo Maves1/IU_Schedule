@@ -8,7 +8,6 @@ void main() {
   List<Group> courseGroups;
 
   group("schedule_manager", () {
-
     test("schedule must be available", () async {
       expect(await scheduleManager.retrieveScheduleInfo(), true);
     });
@@ -31,13 +30,12 @@ void main() {
         courseGroups = scheduleManager.getGroupsForCourse(courses[0]);
 
         if (courseGroups.isNotEmpty) {
-          var schedule = await scheduleManager
-              .getScheduleForGroup(courseGroups[0]);
+          var schedule =
+              await scheduleManager.getScheduleForGroup(courseGroups[0]);
 
           expect(schedule.events.isNotEmpty, true);
         }
       }
     });
-
   });
 }
