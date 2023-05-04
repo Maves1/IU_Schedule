@@ -7,6 +7,7 @@ class Schedule {
   Schedule(this._group, this._scheduleEventsList);
 
   Group get group => _group;
+
   List<ScheduleEntry> get events => _scheduleEventsList;
 
   @override
@@ -22,6 +23,7 @@ class ScheduleEntry {
 
   final DateTime startDateTime;
   final DateTime endDateTime;
+
   // final DateTime dateUntil;
 
   ScheduleEntry(this.title, this.professor, this.location, this.startDateTime,

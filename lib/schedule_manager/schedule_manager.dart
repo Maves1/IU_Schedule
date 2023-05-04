@@ -19,6 +19,7 @@ class ScheduleManager {
 
   final String baseUrl = "https://innohassle.ru/schedule/";
   late final String academicUrl;
+
   // late final String electivesUrl;
 
   final Set<Group> _groups;
@@ -31,9 +32,9 @@ class ScheduleManager {
     return _scheduleManager!;
   }
 
-  ScheduleManager() : _groups = <Group>{},
-                      _scheduleController =
-                                     StreamController<APIResponse<Schedule>>() {
+  ScheduleManager()
+      : _groups = <Group>{},
+        _scheduleController = StreamController<APIResponse<Schedule>>() {
     academicUrl = "$baseUrl/academic.json";
 
     loadSchedule();
@@ -61,7 +62,7 @@ class ScheduleManager {
 
     try {
       await getScheduleForGroup(currGroup);
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
@@ -72,6 +73,8 @@ class ScheduleManager {
 
   Future<bool> retrieveScheduleInfo() async {
     var client = Client();
+
+    _groups.clear();
 
     try {
       scheduleSink.add(APIResponse.loading());

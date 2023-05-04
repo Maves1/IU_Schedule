@@ -20,8 +20,8 @@ class _CalendarPageState extends State<CalendarPage> {
 
   List<ScheduleEntry> _getEventsByDay(DateTime day) {
     return _scheduleClient.currSchedule.events
-            .where((e) => e.startDateTime.weekday == day.weekday)
-            .toList();
+        .where((e) => e.startDateTime.weekday == day.weekday)
+        .toList();
   }
 
   String _getSelectedGroupString() {
@@ -59,14 +59,27 @@ class _CalendarPageState extends State<CalendarPage> {
                     },
                   ),
                   const SizedBox(height: 8.0),
-                  Row(children: <Widget>[
-                    Text('Schedule: ${_getSelectedGroupString()}'),
-                    const Spacer(),
-                    ElevatedButton(
-                        onPressed: () =>
-                            Navigator.of(context).pushNamed("/config"),
-                        child: const Text('Change'))
-                  ]),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                            child: TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pushNamed("/config"),
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: const BorderSide(
+                                                color: Colors.green)))),
+                                child: Text(_getSelectedGroupString())),
+                          ),
+                        )
+                      ]),
                   const SizedBox(height: 8.0),
                   Expanded(
                       child: ListView(
