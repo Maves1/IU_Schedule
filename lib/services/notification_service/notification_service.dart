@@ -88,7 +88,6 @@ class NotificationService {
   }
 
   static bool eventNotificationsEnabled(String event) {
-    print('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH${event}');
     try {
       var notifications = LocalStorageService.getNotifications();
       return notifications.getMap.containsKey(event);

@@ -1,5 +1,3 @@
-import "dart:collection";
-import "dart:convert";
 import "package:json_annotation/json_annotation.dart";
 
 part "notifications.g.dart";

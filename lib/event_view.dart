@@ -6,7 +6,7 @@ import 'schedule_manager/schedule.dart';
 class EventView extends StatefulWidget {
   final ScheduleEntry event;
 
-  EventView({super.key, required this.event});
+  const EventView({super.key, required this.event});
 
   @override
   State<StatefulWidget> createState() => _EventViewState();
