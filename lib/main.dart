@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:inno_schedule/services/notification_service/notification_service.dart';
 import 'calendar_page.dart';
 import 'select_group_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
   runApp(const MyApp());
 }
 
