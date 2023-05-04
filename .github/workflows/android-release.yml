@@ -28,6 +28,8 @@ jobs:
         run: flutter format lib --set-exit-if-changed
       - name: Run linter
         run: flutter analyze
+      - name: Run tests
+        run: flutter test
       - name: Start release build
         run: flutter build apk
       - name: Save APK artifact
