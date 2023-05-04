@@ -1,9 +1,19 @@
 # inno_schedule
 
-A simple Innopolis University schedule
+<p float="left">
+  <img src="https://user-images.githubusercontent.com/27851965/236309111-e1a564df-6b64-4e5d-8c80-303d65f7f942.jpg" height=300/>
+  <img src="https://user-images.githubusercontent.com/27851965/236308946-739e457c-1354-42a6-bc6b-96b6283609b3.jpg" height=300/>
+  <img src="https://user-images.githubusercontent.com/27851965/236308742-18469768-a329-4958-ba56-f888e4e80ffa.jpg" height=300/>
+</p>
 
-![1](https://user-images.githubusercontent.com/27851965/230796580-5d90cc76-d0d9-4f29-957e-5192e58e9778.jpg)
-![2](https://user-images.githubusercontent.com/27851965/230796581-0b95c1a4-ce2e-4eb9-9f8e-5064564485b3.jpg)
+
+A simple Innopolis University schedule.
+
+**Features:**
+* Downloads up-to-date schedules for all groups
+* Allows setting notifications for each event
+
+
 
 ## Schedule
 
