@@ -6,7 +6,6 @@ part "notifications.g.dart";
 
 @JsonSerializable(explicitToJson: true)
 class Notifications {
-
   final int currentId;
   // Below positions in the map stand for following: <Event, Notify>>
   final Map<String, bool> map;
@@ -15,7 +14,8 @@ class Notifications {
 
   Notifications({required this.currentId, required this.map});
 
-  factory Notifications.fromJson(Map<String, dynamic> json) => _$NotificationsFromJson(json);
+  factory Notifications.fromJson(Map<String, dynamic> json) =>
+      _$NotificationsFromJson(json);
 
   Map<String, dynamic> toJson() => _$NotificationsToJson(this);
 

@@ -85,8 +85,8 @@ class _SelectGroupPageState extends State<SelectGroupPage> {
               child: ElevatedButton(
             child: const Text('Save'),
             onPressed: () {
-              NotificationService()
-                  .showNotification(title: 'Settings change', body: 'You have changed the group');
+              NotificationService().showNotification(
+                  title: 'Settings change', body: 'You have changed the group');
               var group = _scheduleClient.getGroupsForCourse(
                   _scheduleClient.courses[_selectedCourse])[_selectedGroup];
               LocalStorageService.saveGroup(group);

@@ -12,46 +12,41 @@ class NotificationService {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Russia/Moscow'));
 
-
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('iu_icon_2');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-      onDidReceiveLocalNotification:
-        (int id, String? title, String? body, String? payload) async {}
-    );
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+        onDidReceiveLocalNotification:
+            (int id, String? title, String? body, String? payload) async {});
 
     var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS
-    );
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
     await notificationsPlugin.initialize(initializationSettings,
-      onDidReceiveNotificationResponse:
-        (NotificationResponse notificationResponse) async {});
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) async {});
   }
 
   static notificationDetails() {
     return const NotificationDetails(
-      android: AndroidNotificationDetails('channelId', 'IU schedule',
-          channelDescription: 'Reminds you about the lectures, tutorials or labs in IU. You set those events to remind by your own.',
-      importance: Importance.max),
-      iOS: DarwinNotificationDetails()
-    );
+        android: AndroidNotificationDetails('channelId', 'IU schedule',
+            channelDescription:
+                'Reminds you about the lectures, tutorials or labs in IU. You set those events to remind by your own.',
+            importance: Importance.max),
+        iOS: DarwinNotificationDetails());
   }
 
   Future showNotification(
-  {int id = 0, String? title, String? body, String? payload}
-      ) async {
-    return notificationsPlugin.show(id, title, body, await notificationDetails());
+      {int id = 0, String? title, String? body, String? payload}) async {
+    return notificationsPlugin.show(
+        id, title, body, await notificationDetails());
   }
 
   static Future scheduleNotification(DateTime startDateTime,
-      {int id = 0, String? title, String? body, String? payload}
-      ) async {
+      {int id = 0, String? title, String? body, String? payload}) async {
     var time = startDateTime;
 
     while (time.isBefore(DateTime.now().add(const Duration(minutes: 10)))) {
@@ -62,31 +57,34 @@ class NotificationService {
         id,
         title,
         body,
-        tz.TZDateTime.from(time.add(const Duration(days: 7)), tz.local).subtract(const Duration(minutes: 10)),
+        tz.TZDateTime.from(time.add(const Duration(days: 7)), tz.local)
+            .subtract(const Duration(minutes: 10)),
         await notificationDetails(),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime);
 
     notificationsPlugin.zonedSchedule(
         id,
         title,
         body,
-        tz.TZDateTime.from(time.add(const Duration(days: 14)), tz.local).subtract(const Duration(minutes: 10)),
+        tz.TZDateTime.from(time.add(const Duration(days: 14)), tz.local)
+            .subtract(const Duration(minutes: 10)),
         await notificationDetails(),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime);
 
     return notificationsPlugin.zonedSchedule(
         id,
         title,
         body,
-        tz.TZDateTime.from(time, tz.local).subtract(const Duration(minutes: 10)),
+        tz.TZDateTime.from(time, tz.local)
+            .subtract(const Duration(minutes: 10)),
         await notificationDetails(),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime);
   }
 
   static bool eventNotificationsEnabled(String event) {
@@ -113,12 +111,7 @@ class NotificationService {
       notifications.getMap.remove(event);
     } else {
       notifications.getMap[event] = true;
-      scheduleNotification(
-          startDateTime,
-        id: id,
-        title: title,
-        body: body
-      );
+      scheduleNotification(startDateTime, id: id, title: title, body: body);
     }
 
     LocalStorageService.saveNotifications(notifications);

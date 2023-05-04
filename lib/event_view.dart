@@ -13,8 +13,11 @@ class EventView extends StatefulWidget {
 }
 
 class _EventViewState extends State<EventView> {
-  late bool isSwitched = NotificationService.eventNotificationsEnabled('${widget.event.title} ${widget.event.professor} ${widget.event.location} ${widget.event.startDateTime}');
-  late IconData icon = isSwitched ? Icons.notifications_on_outlined : Icons.notifications_off_outlined;
+  late bool isSwitched = NotificationService.eventNotificationsEnabled(
+      '${widget.event.title} ${widget.event.professor} ${widget.event.location} ${widget.event.startDateTime}');
+  late IconData icon = isSwitched
+      ? Icons.notifications_on_outlined
+      : Icons.notifications_off_outlined;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +37,11 @@ class _EventViewState extends State<EventView> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(DateFormat("HH:mm").format(widget.event.startDateTime)),
+                          Text(DateFormat("HH:mm")
+                              .format(widget.event.startDateTime)),
                           const Text("-"),
-                          Text(DateFormat("HH:mm").format(widget.event.endDateTime))
+                          Text(DateFormat("HH:mm")
+                              .format(widget.event.endDateTime))
                         ]),
                   ),
                   SizedBox(
@@ -61,13 +66,16 @@ class _EventViewState extends State<EventView> {
                           onChanged: (value) {
                             setState(() {
                               isSwitched = value;
-                              icon = isSwitched ? Icons.notifications_on_outlined : Icons.notifications_off_outlined;
+                              icon = isSwitched
+                                  ? Icons.notifications_on_outlined
+                                  : Icons.notifications_off_outlined;
                             });
-                            NotificationService.switchNotifications('${widget.event.title} ${widget.event.professor} ${widget.event.location} ${widget.event.startDateTime}',
+                            NotificationService.switchNotifications(
+                                '${widget.event.title} ${widget.event.professor} ${widget.event.location} ${widget.event.startDateTime}',
                                 widget.event.startDateTime,
                                 title: widget.event.title,
                                 body:
-                                'Today at ${DateFormat("HH:mm").format(widget.event.startDateTime)} - ${DateFormat("HH:mm").format(widget.event.endDateTime)}');
+                                    'Today at ${DateFormat("HH:mm").format(widget.event.startDateTime)} - ${DateFormat("HH:mm").format(widget.event.endDateTime)}');
                           }),
                       Icon(icon)
                     ],
